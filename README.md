@@ -75,38 +75,38 @@ You can use the following credentials to explore the app:
 ## 📁 Project Structure
 
  src/
-├── assets/                 # Static files like images, fonts, etc.
+├── assets/                # Static files like images, fonts, etc.
 ├── components/            # Reusable UI components
-│   ├── layout/            # Application layout components (e.g., Layout.tsx)
+│   └── layout/            # Application layout (e.g., Layout.tsx)
 ├── pages/                 # Route-based pages
 │   ├── add-event/         # Add new event page (AddEvent.tsx)
-│   ├── events/            # Event list and filters
-│   │   ├── components/    # Event-related components
+│   ├── events/            # Event list, filters, and related components
+│   │   ├── components/
 │   │   │   ├── EventCard.tsx
 │   │   │   ├── EventCardSkeleton.tsx
 │   │   │   └── EventsFilter.tsx
 │   │   └── Events.tsx
 │   ├── home/              # Homepage
 │   ├── login/             # Login page
-│   ├── my-events/         # Page for viewing user’s own events
+│   ├── my-events/         # Page for managing user’s events
 │   ├── registration/      # Registration page
 │   └── update-event/      # Update existing event
-├── router/                # App routing configuration
+├── router/                # Application routes configuration
 │   └── routes.tsx
-├── shared/                # Shared UI and logic components
+├── shared/                # Shared components and logic
 │   ├── navbar/            # Navigation bar components
-│   └── protector/         # Route protection/auth guards
-├── constant/              # Constants and static config files
-│   ├── loanapply.ts       # Loan application constants (example)
-│   └── storage.key.ts     # Local storage keys
+│   └── protector/         # Auth route protection logic
+├── constant/              # Static configuration and constants
+│   ├── loanapply.ts
+│   └── storage.key.ts
 ├── helper/                # Utility/helper functions
-├── interface/             # TypeScript interfaces
+├── interface/             # TypeScript interface definitions
 │   └── interface.ts
 ├── lib/                   # Shared libraries or utilities
-├── redux/                 # Redux state management setup
+├── redux/                 # Global state management using Redux Toolkit
 │   ├── api/               # RTK Query API slices
-│   ├── features/          # Redux feature slices
+│   ├── features/          # Feature-specific Redux slices
 │   ├── store/             # Redux store configuration
-│   ├── hooks.ts           # Custom Redux hooks
+│   ├── hooks.ts           # Custom typed Redux hooks
 │   └── rootReducer.ts     # Root reducer (if applicable)
 
