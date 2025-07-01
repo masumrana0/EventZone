@@ -31,9 +31,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../../../ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "../../../ui/alert-dialog";
+
 import type { IEvent } from "../../../../interface/interface";
 import { cn } from "../../../../lib/utils";
-import { useState } from "react";
+import { getTokenInfo } from "../../../../service/auth.service";
+import { Link } from "react-router";
+import {
+  useDeleteEventMutation,
+  useUpdateAttendeesMutation,
+} from "../../../../redux/api/event/event.api";
 
 interface EventCardProps {
   event: IEvent;
@@ -41,27 +58,37 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, showActions = false }: EventCardProps) {
-  const [isUpdateMode, setUpdateMode] = useState({
-    isUpdate: false,
-    data: null,
-  });
+  const userId = getTokenInfo()?._id;
+  const isOwner = userId == event.owner._id;
+  const hasJoined = event?.joinedUsers.includes(userId);
 
-  const isOwner = true;
-  const handleDate = (eventID: string) => {};
-  const hasJoined = false; //user?.joinedEvents.includes(event.id);
-  const isPastEvent = new Date(event.createdAt) < new Date();
+  const [deleteEvent, { isLoading: isDeleting }] = useDeleteEventMutation();
+  const [updateAttendees, { isLoading: isJoining }] =
+    useUpdateAttendeesMutation();
 
-  const handleJoin = () => {
-    // if (!isLoggedIn) {
-    toast("You must be logged in to join an event.");
-    //   router.push("/login");
-    return;
-    // }
-    // joinEvent(event.id);
-    // toast({
-    //   title: "Success!",
-    //   description: `You have joined "${event.title}".`,
-    // });
+  const handleDelete = async (eventId: string) => {
+    try {
+      await deleteEvent(eventId).unwrap();
+      toast.success("Event deleted successfully");
+    } catch (err: any) {
+      const message = err.message || "Failed to delete the event";
+      toast.error(message);
+    }
+  };
+
+  const handleJoin = async (eventId: string) => {
+    if (isOwner) {
+      toast.error("You are the owner of this event. You can't join.");
+      return;
+    }
+
+    try {
+      await updateAttendees(eventId).unwrap();
+      toast.success("Successfully joined the event");
+    } catch (err: any) {
+      const message = err.message || "Failed to join event";
+      toast.error(message);
+    }
   };
 
   return (
@@ -81,16 +108,40 @@ export function EventCard({ event, showActions = false }: EventCardProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                //  onClick={() => onUpdate(event)}
-                >
-                  Update
+                <DropdownMenuItem asChild>
+                  <Link className="ms-2 text-green-500" to={`/update-event/${event._id}`}>Update</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => handleDate(event.id)}
-                  className="text-destructive"
-                >
-                  Delete
+
+                <DropdownMenuItem asChild>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="text-destructive w-full justify-start"
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? "Deleting..." : "Delete"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete the event.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-destructive hover:bg-destructive/90"
+                          onClick={() => handleDelete(event._id as string)}
+                        >
+                          Confirm Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -101,6 +152,7 @@ export function EventCard({ event, showActions = false }: EventCardProps) {
           <span>Posted by {event.owner.name}</span>
         </CardDescription>
       </CardHeader>
+
       <CardContent className="flex-grow space-y-4">
         <div className="flex items-start gap-2 text-muted-foreground">
           <Info className="h-4 w-4 mt-1 flex-shrink-0" />
@@ -109,11 +161,11 @@ export function EventCard({ event, showActions = false }: EventCardProps) {
         <div className="space-y-2 text-sm">
           <p className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-accent" />
-            <span>{format(new Date(event.createdAt), "MMMM d, yyyy")}</span>
+            <span>{format(new Date(event.dateTime), "MMMM d, yyyy")}</span>
           </p>
           <p className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-accent" />
-            <span>{format(new Date(event.createdAt), "p")}</span>
+            <span>{format(new Date(event.dateTime), "p")}</span>
           </p>
           <p className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-accent" />
@@ -121,39 +173,45 @@ export function EventCard({ event, showActions = false }: EventCardProps) {
           </p>
         </div>
       </CardContent>
+
       <CardFooter className="flex justify-between items-center bg-muted/50 p-4">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Users className="h-5 w-5" />
           <span>{event.attendeeCount.toLocaleString()} Attendees</span>
         </div>
-        {!showActions && (
+
+        {!isOwner ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div>
                   <Button
-                    onClick={handleJoin}
-                    disabled={hasJoined}
-                    aria-disabled={hasJoined}
+                    onClick={() => handleJoin(event._id as string)}
+                    disabled={hasJoined || isJoining}
                     className={cn(
                       "bg-accent shadow-md border text-accent-foreground hover:bg-accent/100",
                       hasJoined &&
                         "bg-muted text-muted-foreground cursor-not-allowed opacity-60 pointer-events-none"
                     )}
                   >
-                    {hasJoined ? "Joined" : "Join Event"}
+                    {hasJoined
+                      ? "Joined"
+                      : isJoining
+                      ? "Joining..."
+                      : "Join Event"}
                   </Button>
                 </div>
               </TooltipTrigger>
-              {isPastEvent && (
+              {hasJoined && (
                 <TooltipContent>
-                  <p>This event has already passed.</p>
+                  <p>You have already joined this event</p>
                 </TooltipContent>
               )}
             </Tooltip>
           </TooltipProvider>
+        ) : (
+          <Badge>Ended</Badge>
         )}
-        {showActions && isPastEvent && <Badge>Ended</Badge>}
       </CardFooter>
     </Card>
   );

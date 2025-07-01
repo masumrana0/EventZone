@@ -24,7 +24,7 @@ export const registerSchema = z
 
 export const eventSchema = z.object({
   title: z.string().min(3, "Event title must be at least 3 characters"),
-  datetime: z.string().min(1, "Date and time is required"),
+  dateTime: z.string().min(1, "Date and time is required"),
   location: z.string().min(3, "Location must be at least 3 characters"),
   description: z.string().min(10, "Description must be at least 10 characters"),
 });

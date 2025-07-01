@@ -47,7 +47,7 @@ const Login = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const res = await sigin(data).unwrap();
-      console.log("Login successful:", res.data.accessToken);
+
       dispatch(setIsLoggedIn(res.data.accessToken));
       setError(null); // Clear any previous errors
       navigate("/");

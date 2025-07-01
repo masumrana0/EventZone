@@ -1,10 +1,23 @@
-import { jwtDecode } from "jwt-decode";
 import { AUTH_INFO_KEY, AUTH_KEY } from "../constant/storage.key";
 import {
   getFromLocalStorage,
   getFromLocalStorageAsParse,
   setToLocalStorageAsStringify,
 } from "../utils/local-storage";
+
+function decodeCryptoTokenPayload(token: string): Record<string, any> | null {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+
+    const payload = parts[1];
+    const json = atob(payload);
+    return JSON.parse(json);
+  } catch (err) {
+    console.error("Failed to decode token:", err);
+    return null;
+  }
+}
 
 export const storeToken = ({ accessToken }: { accessToken: string }) => {
   const tokenWithBearer = `Bearer ${accessToken}`;
@@ -32,8 +45,8 @@ export const getTokenInfo = (): any => {
     const token = getFromLocalStorage(AUTH_KEY);
 
     if (token) {
-      const userDecodedData = jwtDecode<any>(token.split(" ")[1]);
-      const info = userDecodedData._doc;
+      const decodedData = decodeCryptoTokenPayload(token.split(" ")[1]);
+      const info = decodedData?._doc as any;
 
       setToLocalStorageAsStringify(AUTH_INFO_KEY, info);
       return info;

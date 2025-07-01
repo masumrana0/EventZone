@@ -21,12 +21,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../../ui/form";
-import { MapPin, FileText, User } from "lucide-react";
+import { MapPin, FileText } from "lucide-react";
 import { Input } from "../../ui/input";
 import { DateTimePicker } from "../../ui/datetime-picker";
 import { Textarea } from "../../ui/textarea";
 import { Button } from "../../ui/button";
-
+import { useCreateEventMutation } from "../../../redux/api/event/event.api";
 
 const AddEvent = () => {
   const navigate = useNavigate();
@@ -35,28 +35,27 @@ const AddEvent = () => {
     resolver: zodResolver(eventSchema),
     defaultValues: {
       title: "",
-      datetime: "",
+      dateTime: "",
       location: "",
       description: "",
     },
   });
 
+  const [createEvent, { isLoading }] = useCreateEventMutation();
+
   const onSubmit = async (data: EventFormData) => {
     try {
       // Parse datetime to separate date and time
-      console.log("Submitting event data:", data);
-      toast("Event created successfully! Redirecting to events page...");
 
+      await createEvent(data).unwrap();
+      toast.success("Event created successfully! ");
       // Reset form
       form.reset();
-
-      // Redirect to events page after a short delay
-      setTimeout(() => {
-        navigate("/events");
-      }, 1500);
-    } catch (error) {
-      const message = "Failed to create event. Please try again.";
-      toast(message);
+      navigate("/events");
+    } catch (error: any) {
+      const message =
+        error.message || "Failed to create event. Please try again.";
+      toast.error(message);
     }
   };
 
@@ -107,28 +106,7 @@ const AddEvent = () => {
 
                 <FormField
                   control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Organizer Name *</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                          <Input
-                            placeholder="Enter organizer name"
-                            className="pl-10"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="datetime"
+                  name="dateTime"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Date and Time *</FormLabel>
@@ -189,14 +167,8 @@ const AddEvent = () => {
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={form.formState.isSubmitting}
-                >
-                  {form.formState.isSubmitting
-                    ? "Creating Event..."
-                    : "Create Event"}
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Creating Event..." : "Create Event"}
                 </Button>
               </form>
             </Form>

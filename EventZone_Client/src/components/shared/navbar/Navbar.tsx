@@ -27,7 +27,6 @@ const Navbar = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isLoggedIn);
 
   const user = getTokenInfo();
-  console.log(user);
 
   // handle Logout
   const handleLogout = () => {
