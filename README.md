@@ -74,47 +74,47 @@ You can use the following credentials to explore the app:
 
 ## 📁 Project Structure
 
-src/
+ src/
 │
-├── assets/ # Static assets (images, fonts, etc.)
+├── assets/                  # Static assets (images, fonts, etc.)
 │
-├── components/ # Reusable layout components
-│ └── layout/
-│ └── Layout.tsx # App layout (e.g. with Navbar/Sidebar)
+├── components/              # Reusable layout components
+│   └── layout/
+│       └── Layout.tsx       # App layout (e.g. with Navbar/Sidebar)
 │
-├── pages/ # Top-level route pages
-│ ├── add-event/ # Page for creating a new event
-│ ├── events/ # Event listing page
-│ │ ├── components/ # Event-related reusable components
-│ │ │ ├── EventCard.tsx
-│ │ │ ├── EventCardSkeleton.tsx
-│ │ │ └── EventsFilter.tsx
-│ │ └── Events.tsx
-│ ├── home/ # Homepage
-│ ├── login/ # Login page
-│ ├── my-events/ # My created/joined events
-│ ├── registration/ # Registration page
-│ └── update-event/ # Update event page
+├── pages/                   # Top-level route pages
+│   ├── add-event/           # Page for creating a new event
+│   ├── events/              # Event listing page
+│   │   ├── components/      # Event-related reusable components
+│   │   │   ├── EventCard.tsx
+│   │   │   ├── EventCardSkeleton.tsx
+│   │   │   └── EventsFilter.tsx
+│   │   └── Events.tsx
+│   ├── home/                # Homepage
+│   ├── login/               # Login page
+│   ├── my-events/           # My created/joined events
+│   ├── registration/        # Registration page
+│   └── update-event/        # Update event page
 │
-├── router/ # Application routing configuration
+├── router/                  # Application routing configuration
 │
-├── shared/ # Shared UI and wrapper components
-│ ├── navbar/
-│ │ └── Navbar.tsx
-│ └── protector/ # Auth guards or protected route wrappers
+├── shared/                  # Shared UI and wrapper components
+│   ├── navbar/
+│   │   └── Navbar.tsx
+│   └── protector/           # Auth guards or protected route wrappers
 │
-├── ui/ # Shadcn-style UI components (buttons, inputs, etc.)
+├── ui/                      # Shadcn-style UI components (buttons, inputs, etc.)
 │
-├── constant/ # Constants (e.g. keys, roles, routes)
+├── constant/                # Constants (e.g. keys, roles, routes)
 │
-├── helper/ # Utility/helper functions
+├── helper/                  # Utility/helper functions
 │
-├── interface/ # TypeScript interfaces & types
+├── interface/               # TypeScript interfaces & types
 │
-├── lib/ # Common libraries (e.g. date formatting, utility classes)
+├── lib/                     # Common libraries (e.g. date formatting, utility classes)
 │
-├── redux/ # Redux Toolkit setup and API slices
+├── redux/                   # Redux Toolkit setup and API slices
 │
-├── service/ # API calls or service layer logic
+├── service/                 # API calls or service layer logic
 │
-└── utils/ # Generic utilities (e.g. localStorage handlers)
+└── utils/                   # Generic utilities (e.g. localStorage handlers)
