@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
+import { Label } from "./label";
 
 interface DatePickerProps {
   label?: string;

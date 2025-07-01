@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Calendar, Menu } from "lucide-react";
+import { Calendar, CalendarSync, Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import {
@@ -66,7 +66,7 @@ const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <Calendar className="h-6 w-6 text-primary" />
+            <CalendarSync className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">EventZone</span>
           </Link>
 

@@ -3,7 +3,7 @@
 
 import axios from "axios";
 import { AUTH_KEY } from "../../constant/storage.key";
-import { storeToken } from "../../service/auth.service";
+// import { storeToken } from "../../service/auth.service";
 import { removeFromLocalStorage } from "../../utils/local-storage";
 
 const instance = axios.create();

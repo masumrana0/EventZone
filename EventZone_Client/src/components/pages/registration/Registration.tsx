@@ -27,7 +27,6 @@ import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { useSignupMutation } from "../../../redux/api/auth/authApi";
 import { toast } from "sonner";
-import { set } from "date-fns";
 
 const Registration = () => {
   const navigate = useNavigate();
