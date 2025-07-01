@@ -75,46 +75,38 @@ You can use the following credentials to explore the app:
 ## 📁 Project Structure
 
  src/
-│
-├── assets/                  # Static assets (images, fonts, etc.)
-│
-├── components/              # Reusable layout components
-│   └── layout/
-│       └── Layout.tsx       # App layout (e.g. with Navbar/Sidebar)
-│
-├── pages/                   # Top-level route pages
-│   ├── add-event/           # Page for creating a new event
-│   ├── events/              # Event listing page
-│   │   ├── components/      # Event-related reusable components
+├── assets/                 # Static files like images, fonts, etc.
+├── components/            # Reusable UI components
+│   ├── layout/            # Application layout components (e.g., Layout.tsx)
+├── pages/                 # Route-based pages
+│   ├── add-event/         # Add new event page (AddEvent.tsx)
+│   ├── events/            # Event list and filters
+│   │   ├── components/    # Event-related components
 │   │   │   ├── EventCard.tsx
 │   │   │   ├── EventCardSkeleton.tsx
 │   │   │   └── EventsFilter.tsx
 │   │   └── Events.tsx
-│   ├── home/                # Homepage
-│   ├── login/               # Login page
-│   ├── my-events/           # My created/joined events
-│   ├── registration/        # Registration page
-│   └── update-event/        # Update event page
-│
-├── router/                  # Application routing configuration
-│
-├── shared/                  # Shared UI and wrapper components
-│   ├── navbar/
-│   │   └── Navbar.tsx
-│   └── protector/           # Auth guards or protected route wrappers
-│
-├── ui/                      # Shadcn-style UI components (buttons, inputs, etc.)
-│
-├── constant/                # Constants (e.g. keys, roles, routes)
-│
-├── helper/                  # Utility/helper functions
-│
-├── interface/               # TypeScript interfaces & types
-│
-├── lib/                     # Common libraries (e.g. date formatting, utility classes)
-│
-├── redux/                   # Redux Toolkit setup and API slices
-│
-├── service/                 # API calls or service layer logic
-│
-└── utils/                   # Generic utilities (e.g. localStorage handlers)
+│   ├── home/              # Homepage
+│   ├── login/             # Login page
+│   ├── my-events/         # Page for viewing user’s own events
+│   ├── registration/      # Registration page
+│   └── update-event/      # Update existing event
+├── router/                # App routing configuration
+│   └── routes.tsx
+├── shared/                # Shared UI and logic components
+│   ├── navbar/            # Navigation bar components
+│   └── protector/         # Route protection/auth guards
+├── constant/              # Constants and static config files
+│   ├── loanapply.ts       # Loan application constants (example)
+│   └── storage.key.ts     # Local storage keys
+├── helper/                # Utility/helper functions
+├── interface/             # TypeScript interfaces
+│   └── interface.ts
+├── lib/                   # Shared libraries or utilities
+├── redux/                 # Redux state management setup
+│   ├── api/               # RTK Query API slices
+│   ├── features/          # Redux feature slices
+│   ├── store/             # Redux store configuration
+│   ├── hooks.ts           # Custom Redux hooks
+│   └── rootReducer.ts     # Root reducer (if applicable)
+
