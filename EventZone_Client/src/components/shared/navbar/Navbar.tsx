@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Calendar, CalendarSync, Menu } from "lucide-react";
+import { CalendarSync, Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import {
